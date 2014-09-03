@@ -32,8 +32,8 @@ function rpc_error_check() {
 }
 
 function post_get_check() {
-  clean_form_input($_POST);
-  clean_form_input($_GET);
+  $_POST = clean_form_input($_POST);
+  $_GET = clean_form_input($_GET);
   if (empty($_POST) && empty($_GET)) {
     return false;
   } else {
