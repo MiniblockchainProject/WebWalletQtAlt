@@ -1,0 +1,20 @@
+JSON-RPC WEB WALLET
+
+This is a PHP (no database required) web wallet script designed for use with Cryptonite and its variants.
+
+IMPORTANT
+
+This web wallet does not support client side wallet encryption, it relies entirely on the cryptonited JSON-RPC and stores private keys server side. It should only be used as an alternative to the Qt wallet, but it can work as an online web wallet.
+
+A version of this wallet with client side wallet encryption can be found here: <link not yet available>
+
+REQUIREMENTS:
+
+* PHP >= 5.4
+* cryptonited > 14080613
+
+INSTALLATION:
+
+* upload files to server
+* run /install/install.php
+* delete /install/ folder
