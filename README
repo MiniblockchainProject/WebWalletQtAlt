@@ -10,8 +10,8 @@ A version of this wallet with client side wallet encryption can be found here: <
 
 REQUIREMENTS:
 
-* PHP >= 5.4
-* cryptonited > 14080613
+* PHP >= 5.4 with BCMATH
+* cryptonited >= 14090315
 
 INSTALLATION:
 
