@@ -38,6 +38,12 @@ $lock_timer = 120;
 // logout if inactive too long (mins)
 $logout_timer = 20;
 
+// initial balance of coinbase account
+$total_coin = '1844674407';
+
+// initial block reward
+$first_reward = '243.1';
+
 // suggested minimum fee
 $min_fee = '0.0000001';
 
