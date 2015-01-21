@@ -16,7 +16,7 @@ if (isset($_GET['rows'])) {
   
   foreach ($balances as $key => $value) {
 	$add_bal = remove_ep($value['balance']);
-	if ($add_bal > 0) {
+	if (bccomp($add_bal, '0') === 1) {
 	  echo "<tr><td>".$value['address']."</td><td>$add_bal&nbsp;$curr_code</td><td><input type='checkbox'".
 	  " name='inputs[]' value='".$value['address']."' onclick='toggle_input($key, $add_bal);' /></td></tr>\n";
 	  $pos_adds++;
