@@ -18,18 +18,25 @@
 	echo "<p><b>Confirmations:</b> ".(isset($tx['confirmations'])?$tx['confirmations']:'0')."</p>";
 	echo "<p><b>Lock Height:</b> ".$tx['lockheight']."</p>";
 	echo "<p><b>Message:</b> ".(empty($tx['msg'])?'none':$tx['msg'])."</p>";
-    echo "<h3>Inputs:</h3><p>";
+    echo "<h3>Inputs:</h3>";
 	
-	foreach ($tx['vin'] as $key => $value) {
-	  if ($value['coinbase'] == true) {
-	    echo "<a href='./?page=search&amp;address=".$value['address']."'>TheCoinbaseAccount".
-	         "</a> &rarr; <span class='sad_txt'>".remove_ep($value['value'])."</span> $curr_code (block reward)<br />";
-	  } else {
-	    echo "<a href='./?page=search&amp;address=".$value['address']."'>".$value['address'].
-	         "</a> &rarr; <span class='sad_txt'>".remove_ep($value['value'])."</span> $curr_code<br />";
+	if (empty($tx['vin'])) {
+	  echo '<p>No Inputs (coinbase genesis transaction)</p>';
+	} else {
+	  echo '<p>';
+	  foreach ($tx['vin'] as $key => $value) {
+	    if ($value['coinbase'] == true) {
+	      echo "<a href='./?page=search&amp;address=".$value['address']."'>TheCoinbaseAccount".
+	           "</a> &rarr; <span class='sad_txt'>".remove_ep($value['value'])."</span> $curr_code (block reward)<br />";
+	    } else {
+	      echo "<a href='./?page=search&amp;address=".$value['address']."'>".$value['address'].
+	           "</a> &rarr; <span class='sad_txt'>".remove_ep($value['value'])."</span> $curr_code<br />";
+	    }
 	  }
+	  echo '</p>';
 	}
-    echo "</p><h3>Outputs:</h3><p>";
+	
+    echo "<h3>Outputs:</h3><p>";
 	foreach ($tx['vout'] as $key => $value) {
 	  if (isset($tx['limit'])) {
 	    echo "Withdrawal limit of input address updated to: <span class='happy_txt'>".
@@ -71,21 +78,32 @@
     $block = $_SESSION[$rpc_client]->getblock($bhash);
     rpc_error_check();
 	
-	echo "<h1>Block Details</h1>";
-	echo "<p><a href='./?page=search&amp;block=".
-	$block['previousblockhash']."'><b>Prev Block</b></a>";
-	echo " | <a href='./?page=search&amp;block=".
-	$block['nextblockhash']."'><b>Next Block</b></a></p>";
+	echo "<div class='pagination float_right'><ul>";
+	
+	if (isset($block['previousblockhash'])) {
+	  echo "<li><a href='./?page=search&amp;block=".$block['previousblockhash']."'><b>Prev Block</b></a></li>";
+	} else {
+	  echo "<li class='disabled'><a href='#'><b>Prev Block</b></a></li>";
+	}
+	if (isset($block['nextblockhash'])) {
+	  echo "<li><a href='./?page=search&amp;block=".$block['nextblockhash']."'><b>Next Block</b></a>";
+	} else {
+	  echo "<li class='disabled'><a href='#'><b>Next Block</b></a>";
+	}
+	
+	echo "</ul></div><h1>Block Details</h1>";
 	echo "<p><b>Block Hash:</b> ".$block['hash']."</p>";
 	echo "<p><b>Master Hash:</b> ".$block['accountroot']."</p>";
 	echo "<p><b>Merkle Root:</b> ".$block['merkleroot']."</p>";
 	echo "<p><b>Version:</b> ".$block['version']."</p>";
+	echo "<p><b>Size:</b> ".round($block['size']/1024, 2)." kB</p>";
 	echo "<p><b>Block Height:</b> ".$block['height']."</p>";
 	echo "<p><b>Confirmations:</b> ".$block['confirmations']."</p>";
 	echo "<p><b>Difficulty:</b> ".$block['difficulty']."</p>";
 	echo "<p><b>Nonce:</b> ".$block['nonce']."</p>";
 	echo "<p><b>Timestamp:</b> ".date("Y-m-d h:i A e", $block['time'])."</p>";
 	echo "<h3>Transactions:</h3><p>";
+	
 	foreach ($block['tx'] as $key => $value) {
 	  echo "<a href='./?page=search&amp;tx=$value'>$value</a><br />";
 	}
