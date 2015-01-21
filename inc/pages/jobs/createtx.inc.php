@@ -24,11 +24,12 @@ $output_array = array();
 if (count($_POST['outputs']) < 256) {
   foreach ($_POST['outputs'] as $key => $value) {
     if (!empty($value)) {
-	  if (is_numeric($_POST['output_vals'][$key])) {
-	    if (bccomp($_POST['output_vals'][$key], '0') === 1) {
+	  $out_val = trim($_POST['output_vals'][$key]);
+	  if (is_numeric($out_val)) {
+	    if (bccomp($out_val, '0') === 1) {
 		  if (!isset($output_array[$value])) {
-		    $total_output = bcadd($total_output, $_POST['output_vals'][$key]);
-		    $output_array[$value] = float_format($_POST['output_vals'][$key]).'ep';
+		    $total_output = bcadd($total_output, $out_val);
+		    $output_array[$value] = float_format($out_val).'ep';
 		  } else {
 		    die('error: same output used more than once: '.safe_str($value));
 		  }
@@ -89,6 +90,7 @@ if (isset($_POST['inputs'])) {
     $add_balance = $_SESSION[$rpc_client]->listbalances($min_confs, array($value));
 	rpc_error_check();
     $cln_balance = remove_ep($add_balance[0]['balance']);
+	if (bccomp($cln_balance, '0') === 0) { continue; }
     $bal_comp = bccomp($reman_input, $cln_balance);
     if ($bal_comp === 1) {
 	  $input_array[$value] = $add_balance[0]['balance'];
