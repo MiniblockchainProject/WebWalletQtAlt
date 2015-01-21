@@ -23,10 +23,10 @@ if (login_state() !== 'valid' || !post_get_check()) {
   <?php
   $rpc_result = $_SESSION[$rpc_client]->listbalances(1, array($cb_address));
   $cb_balance = remove_ep($rpc_result[0]['balance']);
-  $total_coin = bcdiv(bcsub(bcpow(2,64),1), '10000000000');
   $frac_reman = bcdiv($cb_balance, $total_coin);
-  $block_rwrd = bcmul('243.1', $frac_reman);
-  $coin_spply = bcsub($total_coin, $cb_balance);
+  $block_rwrd = bcmul($first_reward, $frac_reman);
+  $tx_stats = $_SESSION[$rpc_client]->gettxoutsetinfo();
+  $coin_spply = remove_ep($tx_stats['total_amount']);
   ?>
   <h3>Economy</h3>
   <b>Coin supply:</b> <?php echo float_format($coin_spply, 4).' '.$curr_code; ?><br />
