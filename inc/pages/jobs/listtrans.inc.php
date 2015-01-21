@@ -43,10 +43,11 @@ if (isset($_GET['history'])) {
     foreach ($transactions as $key => $value) {
 	  $tx_fee = isset($value['fee']) ? $value['fee'] : '0';
 	  $tx_vars = txtr_type($tx_fee, $value['amount'], $value['category'], $curr_code);
+	  $tx_vars['confs'] = ($value['confirmations'] == -1) ? 'unknown' : $value['confirmations'];
       echo 'onclick="redirect(\'./?page=search&tx='.$value['txid'].'\')">';
       echo '<td>'.$value['address'].'</td>';
       echo '<td>'.$tx_vars['category'].'</td>';
-      echo '<td>'.$value['confirmations'].'</td>';
+      echo '<td>'.$tx_vars['confs'].'</td>';
       echo '<td>'.$tx_vars['amount'].'</td>';
       echo '<td>'.date('Y-m-d h:i:s A', $value['timereceived']).'</td>';
       echo '</tr>';
@@ -73,10 +74,11 @@ if (isset($_GET['history'])) {
     foreach ($transactions as $key => $value) {
 	  $tx_fee = isset($value['fee']) ? $value['fee'] : '0';
 	  $tx_vars = txtr_type($tx_fee, $value['amount'], $value['category'], $curr_code);
+	  $tx_vars['confs'] = ($value['confirmations'] == -1) ? 'unknown' : $value['confirmations'];
       echo 'onclick="redirect(\'./?page=search&tx='.$value['txid'].'\')">';
       echo '<td>'.$value['address'].'</td>';
       echo '<td>'.$tx_vars['category'].'</td>';
-      echo '<td>'.$value['confirmations'].'</td>';
+      echo '<td>'.$tx_vars['confs'].'</td>';
       echo '<td>'.$tx_vars['amount'].'</td>';
       echo '<td>'.date('Y-m-d h:i:s A', $value['timereceived']).'</td>';
       echo '</tr>';
